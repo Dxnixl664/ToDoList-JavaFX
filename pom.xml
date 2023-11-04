@@ -20,6 +20,11 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.36.0.3</version> <!-- Use the latest version -->
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.1</version>
+          </dependency>
     </dependencies>
     <build>
         <plugins>

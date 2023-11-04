@@ -23,7 +23,7 @@ public class ToDoListDB {
     public void init() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:tasks.db");
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, description TEXT, completed BOOLEAN)");
+        statement.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, completed BOOLEAN, description TEXT, details TEXT)");
         statement.close();
         connection.close();
     }
@@ -32,12 +32,13 @@ public class ToDoListDB {
         return DriverManager.getConnection("jdbc:sqlite:tasks.db");
     }
     
-    public void addTask(String description) throws SQLException {
+    public void addTask(String description, String details) throws SQLException {
         try (Connection connection = connect()) {
-            String sql = "INSERT INTO tasks (description, completed) VALUES (?, ?)";
+            String sql = "INSERT INTO tasks (completed, description, details) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, description);
-                preparedStatement.setBoolean(2, false);
+                preparedStatement.setBoolean(1, false);
+                preparedStatement.setString(2, description);
+                preparedStatement.setString(3, details);
                 preparedStatement.executeUpdate();
             }
         }
@@ -51,9 +52,10 @@ public class ToDoListDB {
                     ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
-                    String description = resultSet.getString("description");
                     boolean completed = resultSet.getBoolean("completed");
-                    tasks.add(new Task(id, description, completed));
+                    String description = resultSet.getString("description");
+                    String details = resultSet.getString("details");
+                    tasks.add(new Task(id, completed, description, details));
                 }
             }
         }
@@ -62,11 +64,12 @@ public class ToDoListDB {
     
     public void updateTask(Task task) throws SQLException {
         try (Connection connection = connect()) {
-            String sql = "UPDATE tasks SET description = ?, completed = ? WHERE id = ?";
+            String sql = "UPDATE tasks SET completed = ?, description = ?, details = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, task.getDescription());
-                preparedStatement.setBoolean(2, task.isCompleted());
-                preparedStatement.setInt(3,task.getId());
+                preparedStatement.setBoolean(1, task.isCompleted());
+                preparedStatement.setString(2, task.getDescription());
+                preparedStatement.setString(3, task.getDetails());
+                preparedStatement.setInt(4,task.getId());
                 preparedStatement.executeUpdate();
             }
         }
