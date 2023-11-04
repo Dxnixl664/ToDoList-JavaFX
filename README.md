@@ -1,5 +1,9 @@
 # ToDoList-JavaFX
 
+![Image 1](https://github.com/Dxnixl664/ToDoList-JavaFX/blob/main/img1.png)
+![Image 2](https://github.com/Dxnixl664/ToDoList-JavaFX/blob/main/img2.png)
+![Image 3](https://github.com/Dxnixl664/ToDoList-JavaFX/blob/main/img3.png)
+
 ## Description
 ToDoList-JavaFX is a simple yet powerful task management application that allows users to keep track of their daily tasks. Built with JavaFX for a responsive user interface and SQLite for local data storage, this application offers basic functionalities such as adding, updating, and deleting tasks.
 
